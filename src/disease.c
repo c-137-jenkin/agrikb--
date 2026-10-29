@@ -81,15 +81,15 @@ int main(void)
 
                 printf("病害名:");
                 fgets(d.name, MAX_STR, stdin);
-                d.crop[strcspn(d.name, "\n\r")] = '\0';
+                d.name[strcspn(d.name, "\n\r")] = '\0';
 
                 printf("症状:");
                 fgets(d.symptom, MAX_STR, stdin);
-                d.crop[strcspn(d.symptom, "\n\r")] = '\0';
+                d.symptom[strcspn(d.symptom, "\n\r")] = '\0';
 
                 printf("描述:");
                 fgets(d.describe, MAX_STR, stdin);
-                d.crop[strcspn(d.describe, "\n\r")] = '\0';
+                d.describe[strcspn(d.describe, "\n\r")] = '\0';
 
                 if (d.name[0] == '\0')
                 {
@@ -103,6 +103,30 @@ int main(void)
             break;
         case 2:
             printf("\"列表\"功能\n");
+            {
+                if (count == 0)//只要进入一次case1count就会自增，所以count=0说明没有数据
+                {
+                    printf("没有数据,请选择'1'进行添加\n");
+                    continue;
+                }
+                    //'-'表示左对齐，数字表示占位宽度，'-'与'数字'写在'%'与'd/s/f...'之间
+                printf("%-4s %-10s %-16s %-10s %-40s\n", "ID", "作物", "病害名", "症状", "描述");
+
+                for(int i = 0 ; i <= count; i++)//count从1开始，所以循环条件是i<=count
+                {
+                    if(disease[i].deleted) continue;//如果deleted为1，说明该条数据已被删除，跳过
+                    printf(
+                        
+                        "%-4d %-10s %-16s %-10s %-40s\n",
+                         disease[i].id,
+                         disease[i].crop, 
+                         disease[i].name, 
+                         disease[i].symptom,
+                         disease[i].describe
+
+                          );
+                }
+            }
             break;
         case 3:
             printf("\"删除\"功能\n");
