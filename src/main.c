@@ -6,7 +6,6 @@
 int main()
 {
     char line[64];
-    line[0] = 0;
     printf("======AgrikB 植保合规知识库=====\n1.病害管理\n2.药剂管理\n3.规则管理\n4.统计报表\n5.数据校验\n6.导入/导出 CSV\n7.查看日志\n0.退出\n");
     printf("================================\n\n");
     do
@@ -15,11 +14,11 @@ int main()
          读到\n时停下，并且\n会被读取而不是留在缓冲区。*/
         fgets(line, 64, stdin);
         /*strcspn的返回值是第一个符合要求的数据的数组角标*/
-        line[strcspn(line, "\n")] = '\0';
+        line[strcspn(line, "\n\r")] = '\0';
         if (line[0] == '\0')
         {
             printf("输入不能为空，请重新输入：\n\n");
-            line[0] = 1;
+            line[0] = 1 ;
             continue;
         }
         char extra;
@@ -45,7 +44,6 @@ int main()
         case 0:
             printf("see you . \n\n");
             line[0] = 0;
-            break;
         case 1:
             printf("[占位] 病害管理功能尚未实现\n\n");
             break;
