@@ -33,7 +33,7 @@ int main(void)
         int choice = 0;
         char extra = 0;
 
-        line[strcspn(line, "\n")] = '\0';
+        line[strcspn(line, "\n\r")] = '\0';
 
         if (line[0] == '\0')
         {
@@ -58,7 +58,7 @@ int main(void)
         switch (choice)
         {
         case 0:
-            printf("see you \n ");
+            printf("see you ！ \n ");
             line[0] = 0;
             break;
             //“添加”功能的实现
@@ -130,6 +130,58 @@ int main(void)
             break;
         case 3:
             printf("\"删除\"功能\n");
+            {   int id_ ;
+                printf("要删除的id: ");
+                fgets(line , sizeof(line) , stdin ) ;
+                line[strcspn(line , "\n\r")] = '\0' ;
+                sscanf(line , "%d" , &id_) ;
+
+                if(disease[id_].deleted) printf("已删除\n") ;
+                else
+                {
+                    for(int i=0 ; i <= count ; i++ )
+                    {
+                        if(disease[i].id == id_)
+                        {
+                            disease[i].deleted = 1 ;
+                            memset(&disease[i].id , 0 , sizeof(disease[i].id )) ;
+                            memset(&disease[i].crop , 0 , sizeof(disease[i].crop )) ;
+                            memset(&disease[i].name , 0 , sizeof(disease[i].name )) ;
+                            memset(&disease[i].symptom , 0 , sizeof(disease[i].symptom )) ;
+                            memset(&disease[i].describe , 0 , sizeof(disease[i].describe )) ;
+                
+                            printf("已删除\n") ;
+                            printf("是否保留删除数据的id ？\n若不选择则回车，若选择删除则输入任意大于零数字：\n") ; 
+                            char choice1[60] ; 
+                            fgets(choice1 , 64 , stdin ) ; 
+                            choice1[strcspn(choice1 , "\n\r")] = '\0' ;
+                            if(choice)
+                            {   
+                                for(;id_<count;id_++)
+                                {   int id2 = ++id_ ;
+                                    disease[id_].id = disease[id2].id ;
+                                    strcpy(disease[id_].crop , disease[id2].crop);
+                                    strcpy(disease[id_].name , disease[id2].name);
+                                    strcpy(disease[id_].symptom , disease[id2].symptom);
+                                    strcpy(disease[id_].describe , disease[id2].describe);
+                                }
+                                printf("删除成功！");
+                                count-- ;
+
+
+
+                            }
+                            else {printf("保存成功!");}
+                            break ; 
+                        }
+
+
+
+                    }
+
+
+                }
+            }
             break;
         }
 
