@@ -103,7 +103,10 @@ int main(void)
             break;
         case 2:
             printf("\"列表\"功能\n");
-            {
+            printf("请选择展示模式：若固定id则输入1，若流动id则输入0\n默认值为\"流动\"模式\n");
+            {   int c = 0 ;
+                scanf("%d",&c) ;
+                getchar() ;
                 if (count == 0)//只要进入一次case1count就会自增，所以count=0说明没有数据
                 {
                     printf("没有数据,请选择'1'进行添加\n");
@@ -113,9 +116,12 @@ int main(void)
                 printf("%-4s %-10s %-16s %-10s %-40s\n", "ID", "作物", "病害名", "症状", "描述");
 
                 for(int i = 0 ; i <= count; i++)//count从1开始，所以循环条件是i<=count
-                {
-                    if(disease[i].deleted) continue;//如果deleted为1，说明该条数据已被删除，跳过
-                    printf(
+                {   if(c){
+                        if(disease[i].deleted) continue;/*若id是流动的，则删除的部分的id会被其他部分填充。
+                                                          若id是固定的，则删除部分id应当不显示，以达到更好的呈现效果*/
+                         }
+                         //"固定"id模式下,如果deleted为1，说明该条数据已被删除，跳过
+                         printf(
                         
                         "%-4d %-10s %-16s %-10s %-40s\n",
                          disease[i].id,
@@ -144,26 +150,29 @@ int main(void)
                         if(disease[i].id == id_)
                         {
                             disease[i].deleted = 1 ;
-                            memset(&disease[i].id , 0 , sizeof(disease[i].id )) ;
+    
                             memset(&disease[i].crop , 0 , sizeof(disease[i].crop )) ;
                             memset(&disease[i].name , 0 , sizeof(disease[i].name )) ;
                             memset(&disease[i].symptom , 0 , sizeof(disease[i].symptom )) ;
                             memset(&disease[i].describe , 0 , sizeof(disease[i].describe )) ;
                 
                             printf("已删除\n") ;
+
                             printf("是否保留删除数据的id ？\n若不选择则回车，若选择删除则输入任意大于零数字：\n") ; 
                             char choice1[60] ; 
                             fgets(choice1 , 64 , stdin ) ; 
                             choice1[strcspn(choice1 , "\n\r")] = '\0' ;
-                            if(choice)
+
+                            if(choice1[0])
                             {   
-                                for(;id_<count;id_++)
+                                for(;id_<count;id_++)//用于将空id填充，避免出现列表id不连续。若选择此条建议使用流动id列表
                                 {   int id2 = ++id_ ;
-                                    disease[id_].id = disease[id2].id ;
+                                    id_-- ;
                                     strcpy(disease[id_].crop , disease[id2].crop);
                                     strcpy(disease[id_].name , disease[id2].name);
                                     strcpy(disease[id_].symptom , disease[id2].symptom);
                                     strcpy(disease[id_].describe , disease[id2].describe);
+
                                 }
                                 printf("删除成功！");
                                 count-- ;
@@ -171,7 +180,7 @@ int main(void)
 
 
                             }
-                            else {printf("保存成功!");}
+                            else {printf("保存成功!");}//不执行填充，若选择此条，建议选择固定id列表
                             break ; 
                         }
 
