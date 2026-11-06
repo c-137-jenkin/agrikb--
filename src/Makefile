@@ -9,5 +9,8 @@ compile_disease.c: disease.c
 
 compile_pesticide.c: pesticide.c
 	$(CC) $(CFLAGS) pesticide.c -o pesticide.exe
+
+compile_rule.c: rule.c
+	$(CC) $(CFLAGS) rule.c -o rule.exe
 clean:
-	del *.o main.exe disease.exe pesticide.exe
+	del *.o main.exe disease.exe pesticide.exe rule.exe
